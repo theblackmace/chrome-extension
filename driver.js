@@ -5,9 +5,7 @@ const deleteBtn = document.querySelector("#delete-btn")
 const tabBtn = document.querySelector("#tab-btn")
 
 let myLeads = []
-const tabs = [
-    {url: "https://www.linkedin.com/in/per-harald-borgen/"}
-]
+
 
 const leadsFromLocalStorage = JSON.parse(localStorage.getItem("myLeads"))
 console.log(leadsFromLocalStorage)
@@ -28,12 +26,17 @@ inputBtn.addEventListener("click", function(){
 })
 
 tabBtn.addEventListener("click", function(){
-    console.log(tabs[0].url)
-    myLeads.push(tabs[0].url)
-    localStorage.setItem("myLeads", JSON.stringify(myLeads))
-    console.log("Local Storage Array: "+localStorage.getItem("myLeads"))
-    render(myLeads)
+    console.log("SAVE TAB btn clicked")
+
+    chrome.tabs.query({active: true, currentWindow: true}, function(tabs){
+        console.log(tabs[0].url)
+        myLeads.push(tabs[0].url)
+        localStorage.setItem("myLeads", JSON.stringify(myLeads) )
+        render(myLeads)
+    })
+
 })
+
 
 deleteBtn.addEventListener("dblclick", function(){
     console.log("Delete Button clicked twice")
